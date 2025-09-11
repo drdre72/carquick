@@ -1,0 +1,42 @@
+PRD
+
+CarQuick Car Rental Website Design Brief
+
+Overview
+CarQuick is a sleek, modern car rental website (built on Wix) serving Joliet, IL and surrounding areas. The platform will provide easy browsing, secure booking/payment, and a loyalty program. The design emphasizes trust, speed, and a professional dark-mode interface with light-mode toggle.
+
+Design & Features
+
+Responsive Design: Optimized for desktop, tablet, and mobile.
+
+Vehicle Catalog: Grid/card layout with photos, pricing, filters (Economy, SUV, Luxury, etc.), and availability search. Guests see limited details; logged-in users get full info and “Book Now.”
+
+User Accounts: Simple sign-up with Google or email; email verification required. Users manage profile, rentals, and rewards via a dashboard.
+
+Booking & Payment: Intuitive booking form, date/time picker, secure checkout (cards, wallets), confirmation emails, and clear cancellation policy.
+
+Loyalty & Engagement
+
+CarQuick Points: Earn points on rentals, redeemable for rewards like discounts or gas cards.
+
+Notifications: Email, optional SMS, and dashboard alerts for bookings, reminders, and promos.
+
+Admin Capabilities
+
+Two admin profiles with full permissions.
+
+Admin dashboard shows all vehicles, customer profiles (with uploaded photo), rental status (green/yellow/red), and live map pins of car locations.
+
+Ability to edit car listings directly from catalog view and drill into customer details.
+
+Security & Performance
+
+Enterprise-grade local security, HTTPS, DDoS protection, MFA for admins, data backups, and compliance with privacy laws.
+
+Fast load times via Wix performance tools/CDN.
+
+Additional Pages
+About Us, Fleet/Services, Policies, Contact (with phone, email, optional live chat).
+
+Goal
+Deliver a user-friendly, secure, and reliable platform that rivals Hertz, Enterprise, and Turo while offering CarQuick’s local advantage.
