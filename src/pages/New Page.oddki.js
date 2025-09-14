@@ -11,6 +11,10 @@ let featuredVehicles = [];
 
 $w.onReady(function () {
     console.log('✅ HOME page $w.onReady fired!');
+    console.log('🧪 TESTING - Starting Hello World test...');
+
+    // SIMPLE TEST: Try to change any text to "Hello World"
+    testHelloWorld();
 
     // Initialize homepage with proper Wix element handling
     initializeWixHomepage();
@@ -18,6 +22,79 @@ $w.onReady(function () {
     checkUserAuthentication();
     loadFeaturedVehicles();
 });
+
+function testHelloWorld() {
+    console.log('🧪 Running Hello World test...');
+
+    // Test a wide range of possible element IDs
+    const testElements = [
+        '#text1', '#text2', '#text3', '#text4', '#text5', '#text6', '#text7', '#text8', '#text9', '#text10',
+        '#heading1', '#heading2', '#heading3', '#title1', '#title2', '#title3',
+        '#label1', '#label2', '#label3', '#label4', '#label5',
+        '#textElement1', '#textElement2', '#textElement3',
+        '#richTextElement1', '#richTextElement2'
+    ];
+
+    let foundElements = 0;
+
+    testElements.forEach(elementId => {
+        try {
+            const element = $w(elementId);
+            if (element) {
+                // Try different property names depending on element type
+                if (typeof element.text !== 'undefined') {
+                    element.text = 'Hello World! 👋';
+                    console.log(`✅ HELLO WORLD set in ${elementId} (text property)`);
+                    foundElements++;
+                } else if (typeof element.label !== 'undefined') {
+                    element.label = 'Hello World! 👋';
+                    console.log(`✅ HELLO WORLD set in ${elementId} (label property)`);
+                    foundElements++;
+                } else if (typeof element.html !== 'undefined') {
+                    element.html = '<p>Hello World! 👋</p>';
+                    console.log(`✅ HELLO WORLD set in ${elementId} (html property)`);
+                    foundElements++;
+                } else {
+                    console.log(`⚠️ ${elementId} exists but no text/label/html property found`);
+                }
+
+                // Make sure it's visible
+                if (typeof element.show === 'function') {
+                    element.show();
+                }
+            }
+        } catch (error) {
+            // Element doesn't exist, skip silently
+        }
+    });
+
+    // Test buttons too
+    const buttonElements = [
+        '#button1', '#button2', '#button3', '#button4', '#button5',
+        '#btn1', '#btn2', '#btn3'
+    ];
+
+    buttonElements.forEach(buttonId => {
+        try {
+            const button = $w(buttonId);
+            if (button) {
+                button.label = 'Hello World! 👋';
+                button.show();
+                console.log(`✅ HELLO WORLD set in ${buttonId}`);
+                foundElements++;
+            }
+        } catch (error) {
+            // Button doesn't exist, skip silently
+        }
+    });
+
+    console.log(`🧪 Hello World test complete - found ${foundElements} elements`);
+
+    if (foundElements === 0) {
+        console.log('❌ NO ELEMENTS FOUND! This suggests the page has no standard Wix elements.');
+        console.log('💡 Try adding text elements or buttons in Wix Studio editor first.');
+    }
+}
 
 function initializeWixHomepage() {
     console.log('🎨 Initializing Wix-compatible homepage...');
