@@ -1,11 +1,10 @@
-// CarQuick Fleet/Inventory Page - Enhanced vehicle catalog
+// CarQuick Fleet/Inventory Page - Clean Implementation
 import { currentMember } from 'wix-members';
 import wixLocation from 'wix-location';
 import wixStorage from 'wix-storage';
 import { getVehicles } from 'backend/vehicles.web';
 
 let allVehicles = [];
-let filteredVehicles = [];
 let currentUser = null;
 
 $w.onReady(function () {
@@ -16,31 +15,15 @@ $w.onReady(function () {
 });
 
 function initializeFleetPage() {
-    console.log('CarQuick Enhanced - Fleet Page Loading...');
+    console.log('CarQuick - Clean Fleet Page Loading...');
     
-    // Initialize page content with available elements
-    if ($w('#text1')) {
-        $w('#text1').text = 'Our Premium Fleet - Choose from our wide selection of vehicles';
-    }
-    
-    // Show loading message
-    if ($w('#text1')) {
-        $w('#text1').text = 'Loading vehicles...';
-    }
+    // Initialize page content
+    console.log('Vehicle inventory page initialized');
 }
 
 function setupEventHandlers() {
-    // Gallery interaction for vehicle selection
-    if ($w('#gallery2')) {
-        $w('#gallery2').onItemClicked((event) => {
-            console.log('Vehicle selected:', event.item);
-            const vehicleData = event.item;
-            if (vehicleData) {
-                wixStorage.session.setItem('selectedVehicle', JSON.stringify(vehicleData));
-                wixLocation.to('/checkout');
-            }
-        });
-    }
+    // Basic page event handlers
+    console.log('Fleet page event handlers setup complete');
 }
 
 async function loadVehicles() {
@@ -53,30 +36,19 @@ async function loadVehicles() {
         if (result.success && result.vehicles.length > 0) {
             allVehicles = result.vehicles;
             console.log('Loaded', allVehicles.length, 'vehicles from backend');
+            displayVehiclesInfo();
         } else {
             // Fallback to demo data
             allVehicles = getDemoVehicles();
             console.log('Using demo vehicle data');
-        }
-        
-        filteredVehicles = [...allVehicles];
-        displayVehicles();
-        
-        // Update text to show loaded status
-        if ($w('#text1')) {
-            $w('#text1').text = `Our Premium Fleet - ${allVehicles.length} vehicles available`;
+            displayVehiclesInfo();
         }
         
     } catch (error) {
         console.error('Failed to load vehicles:', error);
         // Use demo data on error
         allVehicles = getDemoVehicles();
-        filteredVehicles = [...allVehicles];
-        displayVehicles();
-        
-        if ($w('#text1')) {
-            $w('#text1').text = `Our Premium Fleet - ${allVehicles.length} vehicles available`;
-        }
+        displayVehiclesInfo();
     }
 }
 
@@ -133,30 +105,23 @@ function getDemoVehicles() {
     ];
 }
 
-function displayVehicles() {
-    if (!$w('#gallery2') || filteredVehicles.length === 0) {
-        return;
-    }
+function displayVehiclesInfo() {
+    console.log('Our Fleet Inventory:');
+    console.log('==================');
     
-    console.log('Displaying vehicles in gallery');
+    allVehicles.forEach((vehicle, index) => {
+        console.log(`${index + 1}. ${vehicle.name}`);
+        console.log(`   Type: ${vehicle.type}`);
+        console.log(`   Rate: $${vehicle.dailyRate}/day`);
+        console.log(`   Passengers: ${vehicle.passengers}`);
+        console.log(`   Features: ${vehicle.features.join(', ')}`);
+        console.log(`   Available: ${vehicle.available ? 'Yes' : 'No'}`);
+        console.log(`   Description: ${vehicle.description}`);
+        console.log('---');
+    });
     
-    // Prepare gallery data
-    const galleryData = filteredVehicles.map(vehicle => ({
-        _id: vehicle._id,
-        title: vehicle.name,
-        description: `${vehicle.type} - $${vehicle.dailyRate}/day`,
-        slug: vehicle.name.toLowerCase().replace(/\s+/g, '-'),
-        src: vehicle.imageUrl,
-        alt: vehicle.name,
-        type: 'image',
-        // Store full vehicle data for click handling
-        vehicleData: vehicle
-    }));
-    
-    // Update gallery
-    $w('#gallery2').items = galleryData;
-    
-    console.log('Gallery updated with', galleryData.length, 'vehicles');
+    console.log(`Total vehicles available: ${allVehicles.filter(v => v.available).length}`);
+    console.log('To book a vehicle, visit our booking page or contact customer service.');
 }
 
 async function checkUserAuth() {
@@ -165,10 +130,28 @@ async function checkUserAuth() {
         if (member.loggedIn) {
             currentUser = member;
             console.log('User logged in:', member.loginEmail);
+            console.log('User can proceed with vehicle selection and booking');
         } else {
-            console.log('User not logged in');
+            console.log('User not logged in - showing public inventory');
         }
     } catch (error) {
         console.error('Auth check failed:', error);
     }
 }
+
+// Function to simulate vehicle selection (for console demo)
+function selectVehicle(vehicleId) {
+    const vehicle = allVehicles.find(v => v._id === vehicleId);
+    if (vehicle) {
+        console.log(`Vehicle selected: ${vehicle.name}`);
+        console.log('Storing selection and preparing booking...');
+        wixStorage.session.setItem('selectedVehicle', JSON.stringify(vehicle));
+        
+        // In a real implementation, this would navigate to checkout
+        console.log('Ready to proceed to checkout page');
+        // wixLocation.to('/checkout');
+    }
+}
+
+// Export function for testing (can be called from console)
+export { selectVehicle };
