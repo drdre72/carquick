@@ -10,22 +10,46 @@ $w.onReady(function () {
 });
 
 function initializeMasterPage() {
-    // Apply saved theme
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    console.log('🎨 Initializing master page...');
+
+    // Safe localStorage access for Wix environment
+    let isDarkMode = false;
+    try {
+        if (typeof localStorage !== 'undefined') {
+            isDarkMode = localStorage.getItem('darkMode') === 'true';
+            console.log('✅ localStorage available, theme:', isDarkMode);
+        } else {
+            console.log('⚠️ localStorage not available in Wix environment');
+        }
+    } catch (error) {
+        console.log('⚠️ localStorage access failed:', error.message);
+    }
+
     applyTheme(isDarkMode);
-    
+
     // Set up theme toggle in header
     if ($w('#headerThemeToggle')) {
         $w('#headerThemeToggle').checked = isDarkMode;
         $w('#headerThemeToggle').onChange(() => {
             const newTheme = $w('#headerThemeToggle').checked;
             applyTheme(newTheme);
-            localStorage.setItem('darkMode', newTheme);
+
+            // Safe localStorage write
+            try {
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem('darkMode', newTheme);
+                    console.log('✅ Theme saved to localStorage');
+                }
+            } catch (error) {
+                console.log('⚠️ Could not save theme:', error.message);
+            }
         });
+        console.log('✅ Theme toggle configured');
     }
-    
+
     // Hide authentication modals initially
     hideAllModals();
+    console.log('✅ Master page initialization complete');
 }
 
 function setupGlobalNavigation() {
