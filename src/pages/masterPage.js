@@ -509,24 +509,35 @@ function showErrorMessage(message) {
 
 // Theme management
 function applyTheme(isDark) {
-    const theme = isDark ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    // Update CSS custom properties
-    if (isDark) {
-        document.documentElement.style.setProperty('--primary-bg', '#1a1a1a');
-        document.documentElement.style.setProperty('--secondary-bg', '#2d2d2d');
-        document.documentElement.style.setProperty('--text-primary', '#ffffff');
-        document.documentElement.style.setProperty('--text-secondary', '#cccccc');
-        document.documentElement.style.setProperty('--accent-color', '#00d4ff');
-        document.documentElement.style.setProperty('--border-color', '#404040');
-    } else {
-        document.documentElement.style.setProperty('--primary-bg', '#ffffff');
-        document.documentElement.style.setProperty('--secondary-bg', '#f8f9fa');
-        document.documentElement.style.setProperty('--text-primary', '#333333');
-        document.documentElement.style.setProperty('--text-secondary', '#666666');
-        document.documentElement.style.setProperty('--accent-color', '#007bff');
-        document.documentElement.style.setProperty('--border-color', '#e0e0e0');
+    try {
+        if (typeof document === 'undefined') {
+            console.log('⚠️ Document not available for theme management');
+            return;
+        }
+
+        const theme = isDark ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+
+        // Update CSS custom properties
+        if (isDark) {
+            document.documentElement.style.setProperty('--primary-bg', '#1a1a1a');
+            document.documentElement.style.setProperty('--secondary-bg', '#2d2d2d');
+            document.documentElement.style.setProperty('--text-primary', '#ffffff');
+            document.documentElement.style.setProperty('--text-secondary', '#cccccc');
+            document.documentElement.style.setProperty('--accent-color', '#00d4ff');
+            document.documentElement.style.setProperty('--border-color', '#404040');
+        } else {
+            document.documentElement.style.setProperty('--primary-bg', '#ffffff');
+            document.documentElement.style.setProperty('--secondary-bg', '#f8f9fa');
+            document.documentElement.style.setProperty('--text-primary', '#333333');
+            document.documentElement.style.setProperty('--text-secondary', '#666666');
+            document.documentElement.style.setProperty('--accent-color', '#007bff');
+            document.documentElement.style.setProperty('--border-color', '#e0e0e0');
+        }
+
+        console.log('✅ Theme applied:', theme);
+    } catch (error) {
+        console.log('⚠️ Theme application failed:', error.message);
     }
 }
 

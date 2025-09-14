@@ -10,330 +10,107 @@ let currentUser = null;
 let featuredVehicles = [];
 
 $w.onReady(function () {
-    console.log('✅ HOME page $w.onReady fired!');
-    console.log('🧪 TESTING - HMR-safe approach...');
+    console.log('🚗 CarQuick Homepage - Visual Editor Mode');
 
-    // CHECK FOR HMR ISSUES FIRST
-    try {
-        if (typeof module !== 'undefined' && module.hot) {
-            console.log('⚠️ HMR detected - this might cause issues');
-        } else {
-            console.log('✅ No HMR conflicts detected');
-        }
-    } catch (error) {
-        console.log('🔧 HMR check failed:', error.message);
-    }
+    // Simple test to confirm JavaScript is working
+    simpleTest();
 
-    // HEADLESS MODE DETECTION TEST
-    try {
-        console.log('🎯 HEADLESS MODE DETECTION TEST...');
-
-        // Test if we're in headless mode
-        console.log('🔍 Environment check:');
-        console.log('- window.location.href:', (typeof window !== 'undefined' ? window.location.href : 'undefined'));
-        console.log('- Document title:', (typeof document !== 'undefined' ? document.title : 'undefined'));
-        console.log('- $w function available:', typeof $w);
-
-        // Try to find ANY elements at all
-        const allPossibleElements = [
-            '#text1', '#text2', '#text3', '#text4', '#text5', '#text6', '#text7', '#text8',
-            '#button1', '#button2', '#section1', '#container1', '#box1', '#image1',
-            'body', 'html', '#page', '#main', '#content'
-        ];
-
-        let foundAny = false;
-        for (let i = 0; i < allPossibleElements.length; i++) {
-            const elementId = allPossibleElements[i];
-            try {
-                const element = $w(elementId);
-                if (element) {
-                    console.log(`✅ FOUND ELEMENT: ${elementId}, type:`, typeof element);
-                    foundAny = true;
-
-                    // Try to log element properties
-                    const props = Object.keys(element);
-                    console.log(`📋 ${elementId} properties:`, props.slice(0, 10));
-                } else {
-                    console.log(`❌ NULL: ${elementId}`);
-                }
-            } catch (elemError) {
-                console.log(`❌ ERROR: ${elementId} -`, elemError.message);
-            }
-        }
-
-        if (!foundAny) {
-            console.log('🚨 CRITICAL: NO ELEMENTS FOUND AT ALL!');
-            console.log('🤔 This suggests either:');
-            console.log('   1. You are in Wix HEADLESS mode (no visual elements)');
-            console.log('   2. The page has no elements added in Wix Studio');
-            console.log('   3. The $w selector is broken');
-        } else {
-            console.log('✅ Elements found - not in pure headless mode');
-        }
-
-    } catch (ultraError) {
-        console.log('❌ Headless detection test failed:', ultraError.message);
-    }
-
-    // SIMPLE TEST: Try to change any text to "Hello World"
-    try {
-        testHelloWorld();
-    } catch (error) {
-        console.log('❌ testHelloWorld failed:', error.message);
-    }
-
-    // Initialize homepage with proper Wix element handling
-    try {
-        initializeWixHomepage();
-    } catch (error) {
-        console.log('❌ initializeWixHomepage failed:', error.message);
-    }
-
-    try {
-        setupEventHandlers();
-    } catch (error) {
-        console.log('❌ setupEventHandlers failed:', error.message);
-    }
-
-    try {
-        checkUserAuthentication();
-    } catch (error) {
-        console.log('❌ checkUserAuthentication failed:', error.message);
-    }
-
-    try {
-        loadFeaturedVehicles();
-    } catch (error) {
-        console.log('❌ loadFeaturedVehicles failed:', error.message);
-    }
+    // Initialize the homepage
+    initializeHomepage();
 });
 
-function testHelloWorld() {
-    console.log('🧪 Running FIXED Hello World test - NO .show() calls...');
+function simpleTest() {
+    console.log('🧪 Testing JavaScript in Visual Editor...');
 
-    // FOCUS ON WORKING ELEMENTS from the logs
-    const workingElements = ['#text6', '#text7', '#text8'];
-    let successCount = 0;
+    // Find any text elements on the page
+    const textElements = ['#text1', '#text2', '#text3', '#text4', '#text5', '#text6', '#text7', '#text8'];
+    let foundElement = false;
 
-    workingElements.forEach(elementId => {
+    textElements.forEach(elementId => {
         try {
             const element = $w(elementId);
             if (element) {
-                element.text = '🎉 HELLO WORLD! 🎉 JavaScript IS WORKING! 🚀';
-
-                // TRY EXTREME STYLING TO BREAK THROUGH Z-INDEX LAYERS
-                try {
-                    if (element.style) {
-                        element.style = {
-                            "z-index": "99999",
-                            "position": "fixed",
-                            "top": "50px",
-                            "left": "50px",
-                            "background-color": "red",
-                            "color": "white",
-                            "font-size": "32px",
-                            "padding": "20px",
-                            "border": "10px solid yellow",
-                            "width": "500px",
-                            "height": "100px"
-                        };
-                        console.log(`✅ Applied EXTREME styling to ${elementId}!`);
-                    }
-                } catch (styleError) {
-                    console.log(`⚠️ Styling failed for ${elementId}:`, styleError.message);
-                }
-
-                console.log(`✅ BIG HELLO WORLD SUCCESS in ${elementId}!`);
-                successCount++;
+                element.text = '🎉 JAVASCRIPT IS WORKING! 🎉';
+                console.log(`✅ Updated ${elementId} with success message`);
+                foundElement = true;
             }
         } catch (error) {
-            console.log(`❌ Failed to set Hello World in ${elementId}:`, error.message);
+            console.log(`⚠️ Could not update ${elementId}:`, error.message);
         }
     });
 
-    console.log(`🎯 FIXED test complete - ${successCount}/3 working elements updated`);
-
-    if (successCount > 0) {
-        console.log('🎉 SUCCESS! You should see "HELLO WORLD!" text on the page now!');
+    if (foundElement) {
+        console.log('🎉 SUCCESS! JavaScript is working in the visual editor!');
     } else {
-        console.log('❌ No working elements found - template may be overriding everything');
+        console.log('⚠️ No text elements found - you may need to add some elements in Wix Studio first');
     }
 }
 
-function initializeWixHomepage() {
-    console.log('🎨 Initializing Wix-compatible homepage...');
+function initializeHomepage() {
+    console.log('🎨 Setting up CarQuick homepage...');
 
-    try {
-        // Set up section1 if available - but only use Wix properties
-        if ($w('#section1')) {
-            console.log('✅ Found section1 - configuring with Wix properties');
-            const section1 = $w('#section1');
-
-            // Show the section
-            section1.show();
-
-            // Try to set a background image if supported
-            try {
-                section1.background = {
-                    "src": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80",
-                    "color": "#f7fafc"
-                };
-                console.log('✅ Section1 background set');
-            } catch (error) {
-                console.log('ℹ️ Section1 background not supported:', error.message);
-            }
-        }
-
-        // Configure any available page elements with CarQuick content
-        configurePageElements();
-        console.log('✅ Wix homepage initialization complete');
-
-    } catch (error) {
-        console.log('❌ Error initializing homepage:', error.message);
-    }
-}
-
-function configurePageElements() {
-    console.log('🔧 Configuring WORKING page elements only...');
-
-    // FOCUS ON WORKING ELEMENTS ONLY (from logs: text6, text7, text8, gallery1)
-    const workingElements = [
-        { id: '#text6', content: '🚗 CarQuick - Premium Car Rentals' },
-        { id: '#text7', content: 'Find the perfect vehicle for your journey • Premium fleet • Great rates • Easy booking' },
-        { id: '#text8', content: '✨ Premium Fleet Available • ⚡ Instant Booking • 🛡️ 24/7 Support' }
-    ];
-
-    workingElements.forEach(({ id, content }) => {
-        try {
-            if ($w(id)) {
-                $w(id).text = content;
-
-                // TRY TO FORCE VISIBILITY WITH EXTREME Z-INDEX
-                try {
-                    const element = $w(id);
-                    if (element.style) {
-                        element.style = {
-                            "z-index": "9999",
-                            "position": "relative",
-                            "background-color": "red",
-                            "color": "white",
-                            "font-size": "24px",
-                            "padding": "20px",
-                            "border": "5px solid yellow"
-                        };
-                        console.log(`✅ Applied high z-index styling to ${id}`);
-                    }
-                } catch (styleError) {
-                    console.log(`⚠️ Could not apply styling to ${id}:`, styleError.message);
-                }
-
-                console.log(`✅ WORKING ELEMENT UPDATED: ${id}`);
-            }
-        } catch (error) {
-            console.log(`❌ Failed to update working element ${id}:`, error.message);
-        }
-    });
-
-    // Gallery1 works from logs - no .show() needed
-    try {
-        if ($w('#gallery1')) {
-            // Gallery exists and works - no need to show() it
-            console.log('✅ Gallery1 is available');
-        }
-    } catch (error) {
-        console.log('⚠️ Could not access gallery1:', error.message);
-    }
-
-    console.log('✅ WORKING elements configuration complete');
-}
-
-function initializePage() {
-    console.log('🎨 Initializing CarQuick homepage...');
-    
-    // Update main content immediately
+    // Setup page content
     updatePageContent();
-    
-    // Setup contact form if available
-    setupContactForm();
-    
+
+    // Setup event handlers for buttons
+    setupEventHandlers();
+
+    // Load vehicles
+    loadFeaturedVehicles();
+
+    // Check authentication
+    checkUserAuthentication();
+
     console.log('✅ Homepage initialization complete');
 }
 
+
 function updatePageContent() {
     console.log('🔤 Updating page content...');
-    
-    // Update main headings and text elements - with error handling
-    try {
-        if ($w('#text1')) {
-            $w('#text1').text = '🚗 CarQuick - Premium Car Rentals';
-            $w('#text1').show();
-            console.log('✅ Updated text1');
+
+    // Update text elements with CarQuick content
+    const contentUpdates = [
+        { id: '#text1', content: '🚗 CarQuick - Premium Car Rentals' },
+        { id: '#text2', content: 'Find the perfect vehicle for your journey' },
+        { id: '#text3', content: '✨ Premium Fleet Available' },
+        { id: '#text4', content: '⚡ Instant Booking' },
+        { id: '#text5', content: '🛡️ 24/7 Support' },
+        { id: '#text6', content: 'Choose from luxury sedans, SUVs, and electric vehicles' },
+        { id: '#text7', content: 'Book online in minutes with our simple process' },
+        { id: '#text8', content: 'Get help anytime, anywhere with our support team' }
+    ];
+
+    contentUpdates.forEach(({ id, content }) => {
+        try {
+            const element = $w(id);
+            if (element) {
+                element.text = content;
+                console.log(`✅ Updated ${id}`);
+            }
+        } catch (error) {
+            console.log(`⚠️ Could not update ${id}:`, error.message);
         }
-    } catch (error) {
-        console.log('⚠️ Could not update text1:', error.message);
-    }
-    
-    try {
-        if ($w('#text2')) {
-            $w('#text2').text = 'Find the perfect vehicle for your journey • Premium fleet • Great rates • Easy booking';
-            $w('#text2').show();
-            console.log('✅ Updated text2');
-        }
-    } catch (error) {
-        console.log('⚠️ Could not update text2:', error.message);
-    }
-    
-    try {
-        if ($w('#text3')) {
-            $w('#text3').text = '✨ Premium Fleet Available';
-            $w('#text3').show();
-            console.log('✅ Updated text3');
-        }
-    } catch (error) {
-        console.log('⚠️ Could not update text3:', error.message);
-    }
-    
-    try {
-        if ($w('#text4')) {
-            $w('#text4').text = '⚡ Instant Booking';
-            $w('#text4').show();
-            console.log('✅ Updated text4');
-        }
-    } catch (error) {
-        console.log('⚠️ Could not update text4:', error.message);
-    }
-    
-    try {
-        if ($w('#text5')) {
-            $w('#text5').text = '🛡️ 24/7 Support';
-            $w('#text5').show();
-            console.log('✅ Updated text5');
-        }
-    } catch (error) {
-        console.log('⚠️ Could not update text5:', error.message);
-    }
-    
-    // Update buttons with proper error handling
+    });
+
+    // Update buttons
     try {
         if ($w('#button1')) {
             $w('#button1').label = '🚀 View Fleet';
-            $w('#button1').show();
             console.log('✅ Updated button1');
         }
     } catch (error) {
         console.log('⚠️ Could not update button1:', error.message);
     }
-    
+
     try {
         if ($w('#button2')) {
             $w('#button2').label = '📝 Book Now';
-            $w('#button2').show();
             console.log('✅ Updated button2');
         }
     } catch (error) {
         console.log('⚠️ Could not update button2:', error.message);
     }
-    
+
     console.log('✅ Page content update complete');
 }
 
