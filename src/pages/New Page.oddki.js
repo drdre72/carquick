@@ -35,7 +35,29 @@ function testHelloWorld() {
             const element = $w(elementId);
             if (element) {
                 element.text = '🎉 HELLO WORLD! 🎉 JavaScript IS WORKING! 🚀';
-                // REMOVED element.show() - this method doesn't exist!
+
+                // TRY EXTREME STYLING TO BREAK THROUGH Z-INDEX LAYERS
+                try {
+                    if (element.style) {
+                        element.style = {
+                            "z-index": "99999",
+                            "position": "fixed",
+                            "top": "50px",
+                            "left": "50px",
+                            "background-color": "red",
+                            "color": "white",
+                            "font-size": "32px",
+                            "padding": "20px",
+                            "border": "10px solid yellow",
+                            "width": "500px",
+                            "height": "100px"
+                        };
+                        console.log(`✅ Applied EXTREME styling to ${elementId}!`);
+                    }
+                } catch (styleError) {
+                    console.log(`⚠️ Styling failed for ${elementId}:`, styleError.message);
+                }
+
                 console.log(`✅ BIG HELLO WORLD SUCCESS in ${elementId}!`);
                 successCount++;
             }
@@ -100,7 +122,26 @@ function configurePageElements() {
         try {
             if ($w(id)) {
                 $w(id).text = content;
-                // REMOVED .show() - this method doesn't exist in this Wix environment
+
+                // TRY TO FORCE VISIBILITY WITH EXTREME Z-INDEX
+                try {
+                    const element = $w(id);
+                    if (element.style) {
+                        element.style = {
+                            "z-index": "9999",
+                            "position": "relative",
+                            "background-color": "red",
+                            "color": "white",
+                            "font-size": "24px",
+                            "padding": "20px",
+                            "border": "5px solid yellow"
+                        };
+                        console.log(`✅ Applied high z-index styling to ${id}`);
+                    }
+                } catch (styleError) {
+                    console.log(`⚠️ Could not apply styling to ${id}:`, styleError.message);
+                }
+
                 console.log(`✅ WORKING ELEMENT UPDATED: ${id}`);
             }
         } catch (error) {
