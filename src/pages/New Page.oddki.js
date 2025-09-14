@@ -24,75 +24,32 @@ $w.onReady(function () {
 });
 
 function testHelloWorld() {
-    console.log('🧪 Running Hello World test...');
+    console.log('🧪 Running FOCUSED Hello World test on WORKING elements...');
 
-    // Test a wide range of possible element IDs
-    const testElements = [
-        '#text1', '#text2', '#text3', '#text4', '#text5', '#text6', '#text7', '#text8', '#text9', '#text10',
-        '#heading1', '#heading2', '#heading3', '#title1', '#title2', '#title3',
-        '#label1', '#label2', '#label3', '#label4', '#label5',
-        '#textElement1', '#textElement2', '#textElement3',
-        '#richTextElement1', '#richTextElement2'
-    ];
+    // FOCUS ON WORKING ELEMENTS from the logs
+    const workingElements = ['#text6', '#text7', '#text8'];
+    let successCount = 0;
 
-    let foundElements = 0;
-
-    testElements.forEach(elementId => {
+    workingElements.forEach(elementId => {
         try {
             const element = $w(elementId);
             if (element) {
-                // Try different property names depending on element type
-                if (typeof element.text !== 'undefined') {
-                    element.text = 'Hello World! 👋';
-                    console.log(`✅ HELLO WORLD set in ${elementId} (text property)`);
-                    foundElements++;
-                } else if (typeof element.label !== 'undefined') {
-                    element.label = 'Hello World! 👋';
-                    console.log(`✅ HELLO WORLD set in ${elementId} (label property)`);
-                    foundElements++;
-                } else if (typeof element.html !== 'undefined') {
-                    element.html = '<p>Hello World! 👋</p>';
-                    console.log(`✅ HELLO WORLD set in ${elementId} (html property)`);
-                    foundElements++;
-                } else {
-                    console.log(`⚠️ ${elementId} exists but no text/label/html property found`);
-                }
-
-                // Make sure it's visible
-                if (typeof element.show === 'function') {
-                    element.show();
-                }
+                element.text = '🎉 HELLO WORLD! 🎉 JavaScript IS WORKING! 🚀';
+                element.show();
+                console.log(`✅ BIG HELLO WORLD SUCCESS in ${elementId}!`);
+                successCount++;
             }
         } catch (error) {
-            // Element doesn't exist, skip silently
+            console.log(`❌ Failed to set Hello World in ${elementId}:`, error.message);
         }
     });
 
-    // Test buttons too
-    const buttonElements = [
-        '#button1', '#button2', '#button3', '#button4', '#button5',
-        '#btn1', '#btn2', '#btn3'
-    ];
+    console.log(`🎯 FOCUSED test complete - ${successCount}/3 working elements updated`);
 
-    buttonElements.forEach(buttonId => {
-        try {
-            const button = $w(buttonId);
-            if (button) {
-                button.label = 'Hello World! 👋';
-                button.show();
-                console.log(`✅ HELLO WORLD set in ${buttonId}`);
-                foundElements++;
-            }
-        } catch (error) {
-            // Button doesn't exist, skip silently
-        }
-    });
-
-    console.log(`🧪 Hello World test complete - found ${foundElements} elements`);
-
-    if (foundElements === 0) {
-        console.log('❌ NO ELEMENTS FOUND! This suggests the page has no standard Wix elements.');
-        console.log('💡 Try adding text elements or buttons in Wix Studio editor first.');
+    if (successCount > 0) {
+        console.log('🎉 SUCCESS! You should see "HELLO WORLD!" text on the page now!');
+    } else {
+        console.log('❌ No working elements found - template may be overriding everything');
     }
 }
 
@@ -130,54 +87,38 @@ function initializeWixHomepage() {
 }
 
 function configurePageElements() {
-    console.log('🔧 Configuring available page elements...');
+    console.log('🔧 Configuring WORKING page elements only...');
 
-    // List of possible text elements to update
-    const textElements = [
-        { id: '#text1', content: '🚗 CarQuick - Premium Car Rentals' },
-        { id: '#text2', content: 'Find the perfect vehicle for your journey • Premium fleet • Great rates • Easy booking' },
-        { id: '#text3', content: '✨ Premium Fleet Available' },
-        { id: '#text4', content: '⚡ Instant Booking' },
-        { id: '#text5', content: '🛡️ 24/7 Support' },
-        { id: '#text6', content: '🌟 Featured Vehicles' },
-        { id: '#text7', content: 'Choose from our premium selection' },
-        { id: '#text8', content: '✅ CarQuick System Online - Ready to serve you!' }
+    // FOCUS ON WORKING ELEMENTS ONLY (from logs: text6, text7, text8, gallery1)
+    const workingElements = [
+        { id: '#text6', content: '🚗 CarQuick - Premium Car Rentals' },
+        { id: '#text7', content: 'Find the perfect vehicle for your journey • Premium fleet • Great rates • Easy booking' },
+        { id: '#text8', content: '✨ Premium Fleet Available • ⚡ Instant Booking • 🛡️ 24/7 Support' }
     ];
 
-    // Update text elements that exist
-    textElements.forEach(({ id, content }) => {
+    workingElements.forEach(({ id, content }) => {
         try {
             if ($w(id)) {
                 $w(id).text = content;
                 $w(id).show();
-                console.log(`✅ Updated ${id}`);
+                console.log(`✅ WORKING ELEMENT UPDATED: ${id}`);
             }
         } catch (error) {
-            console.log(`ℹ️ ${id} not available`);
+            console.log(`❌ Failed to update working element ${id}:`, error.message);
         }
     });
 
-    // Configure buttons
-    const buttonElements = [
-        { id: '#button1', label: '🚀 View Fleet' },
-        { id: '#button2', label: '📝 Book Now' },
-        { id: '#button3', label: 'Learn More' },
-        { id: '#button4', label: 'Contact Us' }
-    ];
-
-    buttonElements.forEach(({ id, label }) => {
-        try {
-            if ($w(id)) {
-                $w(id).label = label;
-                $w(id).show();
-                console.log(`✅ Updated ${id}`);
-            }
-        } catch (error) {
-            console.log(`ℹ️ ${id} not available`);
+    // Try to make gallery1 visible (we know it works from logs)
+    try {
+        if ($w('#gallery1')) {
+            $w('#gallery1').show();
+            console.log('✅ Gallery1 made visible');
         }
-    });
+    } catch (error) {
+        console.log('⚠️ Could not show gallery1:', error.message);
+    }
 
-    console.log('✅ Page elements configuration complete');
+    console.log('✅ WORKING elements configuration complete');
 }
 
 function initializePage() {
