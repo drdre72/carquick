@@ -1,5 +1,5 @@
-// 🚗 CarQuick Home Page - SECTION1 VERSION
-console.log('🚗 CarQuick Home Page - Section1 Dynamic Version Loading...');
+// 🚗 CarQuick Home Page - WIX COMPATIBLE VERSION
+console.log('🚗 CarQuick Home Page - Wix Compatible Version Loading...');
 
 import { currentMember } from 'wix-members';
 import wixLocation from 'wix-location';
@@ -12,122 +12,95 @@ let featuredVehicles = [];
 $w.onReady(function () {
     console.log('✅ HOME page $w.onReady fired!');
 
-    // Check if section1 is available and build content dynamically
-    if ($w('#section1')) {
-        console.log('✅ Found section1 - building dynamic homepage content');
-        buildHomepageInSection1();
-    } else {
-        console.log('⚠️ No section1 found - falling back to standard elements');
-        initializePage();
-    }
-
+    // Initialize homepage with proper Wix element handling
+    initializeWixHomepage();
     setupEventHandlers();
     checkUserAuthentication();
     loadFeaturedVehicles();
 });
 
-function buildHomepageInSection1() {
-    console.log('🏗️ Building dynamic homepage content in section1...');
+function initializeWixHomepage() {
+    console.log('🎨 Initializing Wix-compatible homepage...');
 
     try {
-        const section1 = $w('#section1');
+        // Set up section1 if available - but only use Wix properties
+        if ($w('#section1')) {
+            console.log('✅ Found section1 - configuring with Wix properties');
+            const section1 = $w('#section1');
 
-        // Set section1 properties
-        section1.show();
+            // Show the section
+            section1.show();
 
-        // Create dynamic HTML content for the homepage
-        const homepageHTML = `
-            <div style="padding: 40px 20px; max-width: 1200px; margin: 0 auto; text-align: center;">
-                <!-- Hero Section -->
-                <div style="margin-bottom: 60px;">
-                    <h1 style="font-size: 3.5rem; font-weight: 700; color: #1a365d; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
-                        🚗 CarQuick - Premium Car Rentals
-                    </h1>
-                    <p style="font-size: 1.3rem; color: #4a5568; margin-bottom: 40px; line-height: 1.6;">
-                        Find the perfect vehicle for your journey • Premium fleet • Great rates • Easy booking
-                    </p>
-
-                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;">
-                        <button id="dynamicFleetBtn" style="
-                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                            color: white; border: none; padding: 15px 30px;
-                            font-size: 1.1rem; font-weight: 600; border-radius: 12px;
-                            cursor: pointer; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-                            transition: all 0.3s ease;
-                        ">🚀 View Fleet</button>
-
-                        <button id="dynamicBookBtn" style="
-                            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                            color: white; border: none; padding: 15px 30px;
-                            font-size: 1.1rem; font-weight: 600; border-radius: 12px;
-                            cursor: pointer; box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
-                            transition: all 0.3s ease;
-                        ">📝 Book Now</button>
-                    </div>
-                </div>
-
-                <!-- Features Section -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px;">
-                    <div style="padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; color: white; box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);">
-                        <div style="font-size: 3rem; margin-bottom: 15px;">✨</div>
-                        <h3 style="font-size: 1.4rem; margin-bottom: 10px; font-weight: 600;">Premium Fleet Available</h3>
-                        <p>Luxury vehicles maintained to the highest standards</p>
-                    </div>
-
-                    <div style="padding: 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 16px; color: white; box-shadow: 0 8px 32px rgba(240, 147, 251, 0.2);">
-                        <div style="font-size: 3rem; margin-bottom: 15px;">⚡</div>
-                        <h3 style="font-size: 1.4rem; margin-bottom: 10px; font-weight: 600;">Instant Booking</h3>
-                        <p>Reserve your vehicle in minutes with our streamlined process</p>
-                    </div>
-
-                    <div style="padding: 30px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 16px; color: white; box-shadow: 0 8px 32px rgba(79, 172, 254, 0.2);">
-                        <div style="font-size: 3rem; margin-bottom: 15px;">🛡️</div>
-                        <h3 style="font-size: 1.4rem; margin-bottom: 10px; font-weight: 600;">24/7 Support</h3>
-                        <p>Round-the-clock assistance for all your rental needs</p>
-                    </div>
-                </div>
-
-                <!-- Featured Vehicles Section -->
-                <div id="featuredSection" style="margin-bottom: 40px;">
-                    <h2 style="font-size: 2.5rem; font-weight: 700; color: #1a365d; margin-bottom: 20px;">🌟 Featured Vehicles</h2>
-                    <p style="font-size: 1.1rem; color: #4a5568; margin-bottom: 40px;">Choose from our premium selection</p>
-                    <div id="vehicleGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                        <div style="text-align: center; color: #4a5568; font-size: 1.1rem;">🔄 Loading featured vehicles...</div>
-                    </div>
-                </div>
-
-                <!-- User Status Section -->
-                <div id="userStatusSection" style="margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border-radius: 16px;">
-                    <div id="welcomeMessage" style="font-size: 1.2rem; font-weight: 600; color: #1a365d; margin-bottom: 15px;">🎁 Sign up today and get 100 bonus points for your first rental</div>
-                    <div id="statusMessage" style="color: #4a5568;">✅ CarQuick System Online - Ready to serve you!</div>
-                </div>
-            </div>
-        `;
-
-        // Check if section1 supports HTML content
-        if (section1.html !== undefined) {
-            section1.html = homepageHTML;
-            console.log('✅ Homepage HTML content set in section1');
-        } else {
-            console.log('ℹ️ Section1 does not support HTML - trying alternative approach');
-            // Alternative approach: try to set background or other properties
-            section1.background = {
-                "src": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80"
-            };
+            // Try to set a background image if supported
+            try {
+                section1.background = {
+                    "src": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80",
+                    "color": "#f7fafc"
+                };
+                console.log('✅ Section1 background set');
+            } catch (error) {
+                console.log('ℹ️ Section1 background not supported:', error.message);
+            }
         }
 
-        // Setup click handlers for dynamic buttons (with delay to ensure elements are rendered)
-        setTimeout(() => {
-            setupDynamicEventHandlers();
-        }, 500);
-
-        console.log('✅ Dynamic homepage content built successfully');
+        // Configure any available page elements with CarQuick content
+        configurePageElements();
+        console.log('✅ Wix homepage initialization complete');
 
     } catch (error) {
-        console.log('❌ Error building homepage in section1:', error.message);
-        console.log('🔄 Falling back to standard initialization');
-        initializePage();
+        console.log('❌ Error initializing homepage:', error.message);
     }
+}
+
+function configurePageElements() {
+    console.log('🔧 Configuring available page elements...');
+
+    // List of possible text elements to update
+    const textElements = [
+        { id: '#text1', content: '🚗 CarQuick - Premium Car Rentals' },
+        { id: '#text2', content: 'Find the perfect vehicle for your journey • Premium fleet • Great rates • Easy booking' },
+        { id: '#text3', content: '✨ Premium Fleet Available' },
+        { id: '#text4', content: '⚡ Instant Booking' },
+        { id: '#text5', content: '🛡️ 24/7 Support' },
+        { id: '#text6', content: '🌟 Featured Vehicles' },
+        { id: '#text7', content: 'Choose from our premium selection' },
+        { id: '#text8', content: '✅ CarQuick System Online - Ready to serve you!' }
+    ];
+
+    // Update text elements that exist
+    textElements.forEach(({ id, content }) => {
+        try {
+            if ($w(id)) {
+                $w(id).text = content;
+                $w(id).show();
+                console.log(`✅ Updated ${id}`);
+            }
+        } catch (error) {
+            console.log(`ℹ️ ${id} not available`);
+        }
+    });
+
+    // Configure buttons
+    const buttonElements = [
+        { id: '#button1', label: '🚀 View Fleet' },
+        { id: '#button2', label: '📝 Book Now' },
+        { id: '#button3', label: 'Learn More' },
+        { id: '#button4', label: 'Contact Us' }
+    ];
+
+    buttonElements.forEach(({ id, label }) => {
+        try {
+            if ($w(id)) {
+                $w(id).label = label;
+                $w(id).show();
+                console.log(`✅ Updated ${id}`);
+            }
+        } catch (error) {
+            console.log(`ℹ️ ${id} not available`);
+        }
+    });
+
+    console.log('✅ Page elements configuration complete');
 }
 
 function initializePage() {
@@ -323,77 +296,23 @@ function setupEventHandlers() {
     console.log('✅ Event handlers setup complete');
 }
 
-function setupDynamicEventHandlers() {
-    console.log('🔗 Setting up dynamic event handlers for section1 content...');
-
-    try {
-        // Setup fleet button click handler
-        const fleetBtn = document.getElementById('dynamicFleetBtn');
-        if (fleetBtn) {
-            fleetBtn.addEventListener('click', () => {
-                console.log('🎯 Dynamic View Fleet button clicked!');
-                try {
-                    wixLocation.to('/all-vehicles');
-                } catch (error) {
-                    console.log('Navigation failed:', error.message);
-                    updateStatusMessage('🎯 Fleet button clicked! (Navigation to All Vehicles page)');
-                }
-            });
-            console.log('✅ Dynamic fleet button click handler attached');
-        }
-
-        // Setup book button click handler
-        const bookBtn = document.getElementById('dynamicBookBtn');
-        if (bookBtn) {
-            bookBtn.addEventListener('click', () => {
-                console.log('📝 Dynamic Book Now button clicked!');
-                try {
-                    // Store quick booking intent
-                    wixStorage.session.setItem('searchParams', JSON.stringify({
-                        quickBooking: true,
-                        timestamp: new Date().toISOString()
-                    }));
-                    wixLocation.to('/all-vehicles');
-                } catch (error) {
-                    console.log('Booking navigation failed:', error.message);
-                    updateStatusMessage('📝 Book Now clicked! (Navigating to All Vehicles page)');
-                }
-            });
-            console.log('✅ Dynamic book button click handler attached');
-        }
-
-        // Add hover effects to buttons
-        [fleetBtn, bookBtn].forEach(btn => {
-            if (btn) {
-                btn.addEventListener('mouseenter', () => {
-                    btn.style.transform = 'translateY(-2px)';
-                    btn.style.boxShadow = '0 8px 25px rgba(0,0,0,0.3)';
-                });
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.transform = 'translateY(0)';
-                    btn.style.boxShadow = btn.id === 'dynamicFleetBtn' ?
-                        '0 4px 15px rgba(102, 126, 234, 0.3)' :
-                        '0 4px 15px rgba(245, 87, 108, 0.3)';
-                });
-            }
-        });
-
-        console.log('✅ Dynamic event handlers setup complete');
-
-    } catch (error) {
-        console.log('❌ Error setting up dynamic event handlers:', error.message);
-    }
-}
-
 function updateStatusMessage(message) {
-    try {
-        const statusElement = document.getElementById('statusMessage');
-        if (statusElement) {
-            statusElement.textContent = message;
+    console.log('📝 Status update:', message);
+
+    // Try to update any available text elements with the status
+    const statusElements = ['#text6', '#text7', '#text8'];
+
+    statusElements.forEach(elementId => {
+        try {
+            if ($w(elementId)) {
+                $w(elementId).text = message;
+                console.log(`✅ Updated status in ${elementId}`);
+                return; // Stop after first successful update
+            }
+        } catch (error) {
+            // Continue to next element
         }
-    } catch (error) {
-        console.log('⚠️ Could not update status message:', error.message);
-    }
+    });
 }
 
 function setupContactForm() {
@@ -496,82 +415,10 @@ function displayFeaturedVehicles() {
     console.log('🖼️ Displaying featured vehicles...');
 
     try {
-        // Try to display in dynamic section first
-        const vehicleGrid = document.getElementById('vehicleGrid');
-        if (vehicleGrid && featuredVehicles.length > 0) {
-            console.log('🎯 Displaying vehicles in dynamic section1 grid');
+        // Try to display in Wix gallery first
+        if ($w('#gallery1') && featuredVehicles.length > 0) {
+            console.log('🎯 Displaying vehicles in gallery1');
 
-            const vehicleCards = featuredVehicles.map(vehicle => `
-                <div style="
-                    background: white;
-                    border-radius: 16px;
-                    overflow: hidden;
-                    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                    cursor: pointer;
-                " class="vehicle-card" data-vehicle-id="${vehicle._id}">
-                    <img src="${vehicle.imageUrl}" alt="${vehicle.name}" style="
-                        width: 100%;
-                        height: 200px;
-                        object-fit: cover;
-                    ">
-                    <div style="padding: 24px;">
-                        <h3 style="font-size: 1.4rem; font-weight: 600; color: #1a365d; margin-bottom: 8px;">
-                            ${vehicle.name}
-                        </h3>
-                        <p style="color: #4a5568; margin-bottom: 12px; font-size: 1rem;">
-                            ${vehicle.type}
-                        </p>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <span style="font-size: 1.5rem; font-weight: 700; color: #667eea;">
-                                $${vehicle.dailyRate}/day
-                            </span>
-                        </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                            ${vehicle.features.map(feature =>
-                                `<span style="
-                                    background: #e2e8f0;
-                                    color: #4a5568;
-                                    padding: 4px 8px;
-                                    border-radius: 12px;
-                                    font-size: 0.8rem;
-                                ">${feature}</span>`
-                            ).join('')}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            vehicleGrid.innerHTML = vehicleCards;
-
-            // Add click handlers to vehicle cards
-            setTimeout(() => {
-                document.querySelectorAll('.vehicle-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const vehicleId = card.getAttribute('data-vehicle-id');
-                        const vehicle = featuredVehicles.find(v => v._id === vehicleId);
-                        console.log('🚗 Vehicle card clicked:', vehicle.name);
-                        updateStatusMessage(`🚗 Selected: ${vehicle.name} - Click Book Now to reserve!`);
-                    });
-
-                    // Add hover effects
-                    card.addEventListener('mouseenter', () => {
-                        card.style.transform = 'translateY(-8px)';
-                        card.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        card.style.transform = 'translateY(0)';
-                        card.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
-                    });
-                });
-            }, 100);
-
-            console.log('✅ Vehicle grid updated with', featuredVehicles.length, 'vehicles');
-        }
-        // Fallback to standard gallery
-        else if ($w('#gallery2') && featuredVehicles.length > 0) {
-            console.log('🔄 Fallback: Using standard gallery');
-            // Prepare gallery data
             const galleryData = featuredVehicles.map(vehicle => ({
                 _id: vehicle._id,
                 title: vehicle.name,
@@ -583,12 +430,47 @@ function displayFeaturedVehicles() {
                 vehicleData: vehicle
             }));
 
-            // Update gallery
-            $w('#gallery2').items = galleryData;
-            console.log('✅ Gallery updated with', galleryData.length, 'vehicles');
-        } else {
-            console.log('ℹ️ No vehicle display area found or no vehicles to show');
+            $w('#gallery1').items = galleryData;
+            console.log('✅ Gallery1 updated with', galleryData.length, 'vehicles');
         }
+        // Try gallery2 as fallback
+        else if ($w('#gallery2') && featuredVehicles.length > 0) {
+            console.log('🔄 Using gallery2');
+
+            const galleryData = featuredVehicles.map(vehicle => ({
+                _id: vehicle._id,
+                title: vehicle.name,
+                description: `${vehicle.type} - $${vehicle.dailyRate}/day`,
+                slug: vehicle.name.toLowerCase().replace(/\s+/g, '-'),
+                src: vehicle.imageUrl,
+                alt: vehicle.name,
+                type: 'image',
+                vehicleData: vehicle
+            }));
+
+            $w('#gallery2').items = galleryData;
+            console.log('✅ Gallery2 updated with', galleryData.length, 'vehicles');
+        }
+        // Use repeater if available
+        else if ($w('#repeater1') && featuredVehicles.length > 0) {
+            console.log('🔄 Using repeater1');
+
+            $w('#repeater1').data = featuredVehicles;
+            console.log('✅ Repeater updated with', featuredVehicles.length, 'vehicles');
+        }
+        // Display vehicle info in text elements
+        else if (featuredVehicles.length > 0) {
+            console.log('🔄 Displaying vehicle info in text elements');
+
+            const vehicleInfo = featuredVehicles.map(v =>
+                `🚗 ${v.name} (${v.type}) - $${v.dailyRate}/day`
+            ).join(' • ');
+
+            updateStatusMessage(`🌟 Featured: ${vehicleInfo}`);
+        } else {
+            console.log('ℹ️ No vehicles to display or no display elements found');
+        }
+
     } catch (error) {
         console.log('⚠️ Error displaying vehicles:', error.message);
     }
@@ -628,26 +510,15 @@ function showLoggedInContent() {
     console.log('👤 Showing logged-in user content...');
 
     try {
-        // Update dynamic book button if it exists
-        const bookBtn = document.getElementById('dynamicBookBtn');
-        if (bookBtn) {
-            bookBtn.textContent = '📝 Continue Booking';
-        }
-
-        // Update welcome message in dynamic section
-        const welcomeMsg = document.getElementById('welcomeMessage');
-        if (welcomeMsg) {
-            welcomeMsg.textContent = '🎯 Continue where you left off or start a new booking';
-        }
-
-        // Fallback to standard elements
+        // Update button labels for logged-in users
         if ($w('#button2')) {
             $w('#button2').label = '📝 Continue Booking';
         }
 
-        if ($w('#text14')) {
-            $w('#text14').text = '🎯 Continue where you left off or start a new booking';
-        }
+        // Update welcome message
+        const welcomeMessage = '🎯 Continue where you left off or start a new booking';
+        updateStatusMessage(welcomeMessage);
+
     } catch (error) {
         console.log('⚠️ Error updating logged-in content:', error.message);
     }
@@ -657,16 +528,10 @@ function showLoggedOutContent() {
     console.log('🌐 Showing public content...');
 
     try {
-        // Update welcome message in dynamic section
-        const welcomeMsg = document.getElementById('welcomeMessage');
-        if (welcomeMsg) {
-            welcomeMsg.textContent = '🎁 Sign up today and get 100 bonus points for your first rental';
-        }
+        // Update welcome message for logged-out users
+        const welcomeMessage = '🎁 Sign up today and get 100 bonus points for your first rental';
+        updateStatusMessage(welcomeMessage);
 
-        // Fallback to standard elements
-        if ($w('#text14')) {
-            $w('#text14').text = '🎁 Sign up today and get 100 bonus points for your first rental';
-        }
     } catch (error) {
         console.log('⚠️ Error updating public content:', error.message);
     }
