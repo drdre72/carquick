@@ -11,16 +11,73 @@ let featuredVehicles = [];
 
 $w.onReady(function () {
     console.log('✅ HOME page $w.onReady fired!');
-    console.log('🧪 TESTING - Starting Hello World test...');
+    console.log('🧪 TESTING - HMR-safe approach...');
+
+    // CHECK FOR HMR ISSUES FIRST
+    try {
+        if (typeof module !== 'undefined' && module.hot) {
+            console.log('⚠️ HMR detected - this might cause issues');
+        } else {
+            console.log('✅ No HMR conflicts detected');
+        }
+    } catch (error) {
+        console.log('🔧 HMR check failed:', error.message);
+    }
+
+    // ULTRA-SIMPLE TEST FIRST
+    try {
+        console.log('🎯 Starting ultra-simple element test...');
+        const testElements = ['#text6', '#text7', '#text8'];
+
+        for (let i = 0; i < testElements.length; i++) {
+            const elementId = testElements[i];
+            try {
+                const element = $w(elementId);
+                if (element && element.text !== undefined) {
+                    element.text = `🔥 VISIBLE TEST ${i + 1} 🔥`;
+                    console.log(`✅ ULTRA-SIMPLE: Set text in ${elementId}`);
+                } else {
+                    console.log(`⚠️ ULTRA-SIMPLE: ${elementId} has no text property`);
+                }
+            } catch (elemError) {
+                console.log(`❌ ULTRA-SIMPLE: ${elementId} failed -`, elemError.message);
+            }
+        }
+    } catch (ultraError) {
+        console.log('❌ Ultra-simple test failed:', ultraError.message);
+    }
 
     // SIMPLE TEST: Try to change any text to "Hello World"
-    testHelloWorld();
+    try {
+        testHelloWorld();
+    } catch (error) {
+        console.log('❌ testHelloWorld failed:', error.message);
+    }
 
     // Initialize homepage with proper Wix element handling
-    initializeWixHomepage();
-    setupEventHandlers();
-    checkUserAuthentication();
-    loadFeaturedVehicles();
+    try {
+        initializeWixHomepage();
+    } catch (error) {
+        console.log('❌ initializeWixHomepage failed:', error.message);
+    }
+
+    try {
+        setupEventHandlers();
+    } catch (error) {
+        console.log('❌ setupEventHandlers failed:', error.message);
+    }
+
+    try {
+        checkUserAuthentication();
+    } catch (error) {
+        console.log('❌ checkUserAuthentication failed:', error.message);
+    }
+
+    try {
+        loadFeaturedVehicles();
+    } catch (error) {
+        console.log('❌ loadFeaturedVehicles failed:', error.message);
+    }
 });
 
 function testHelloWorld() {
