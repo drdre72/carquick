@@ -24,7 +24,7 @@ $w.onReady(function () {
 });
 
 function testHelloWorld() {
-    console.log('🧪 Running FOCUSED Hello World test on WORKING elements...');
+    console.log('🧪 Running FIXED Hello World test - NO .show() calls...');
 
     // FOCUS ON WORKING ELEMENTS from the logs
     const workingElements = ['#text6', '#text7', '#text8'];
@@ -35,7 +35,7 @@ function testHelloWorld() {
             const element = $w(elementId);
             if (element) {
                 element.text = '🎉 HELLO WORLD! 🎉 JavaScript IS WORKING! 🚀';
-                element.show();
+                // REMOVED element.show() - this method doesn't exist!
                 console.log(`✅ BIG HELLO WORLD SUCCESS in ${elementId}!`);
                 successCount++;
             }
@@ -44,7 +44,7 @@ function testHelloWorld() {
         }
     });
 
-    console.log(`🎯 FOCUSED test complete - ${successCount}/3 working elements updated`);
+    console.log(`🎯 FIXED test complete - ${successCount}/3 working elements updated`);
 
     if (successCount > 0) {
         console.log('🎉 SUCCESS! You should see "HELLO WORLD!" text on the page now!');
@@ -100,7 +100,7 @@ function configurePageElements() {
         try {
             if ($w(id)) {
                 $w(id).text = content;
-                $w(id).show();
+                // REMOVED .show() - this method doesn't exist in this Wix environment
                 console.log(`✅ WORKING ELEMENT UPDATED: ${id}`);
             }
         } catch (error) {
@@ -108,14 +108,14 @@ function configurePageElements() {
         }
     });
 
-    // Try to make gallery1 visible (we know it works from logs)
+    // Gallery1 works from logs - no .show() needed
     try {
         if ($w('#gallery1')) {
-            $w('#gallery1').show();
-            console.log('✅ Gallery1 made visible');
+            // Gallery exists and works - no need to show() it
+            console.log('✅ Gallery1 is available');
         }
     } catch (error) {
-        console.log('⚠️ Could not show gallery1:', error.message);
+        console.log('⚠️ Could not access gallery1:', error.message);
     }
 
     console.log('✅ WORKING elements configuration complete');
