@@ -31,15 +31,15 @@ function initializeMasterPage() {
 function setupGlobalNavigation() {
     // Main navigation handlers
     if ($w('#logoLink')) {
-        $w('#logoLink').onClick(() => navigateTo('/'));
+        $w('#logoLink').onClick(() => navigateTo('/new-page'));
     }
-    
+
     if ($w('#homeNavLink')) {
-        $w('#homeNavLink').onClick(() => navigateTo('/'));
+        $w('#homeNavLink').onClick(() => navigateTo('/new-page'));
     }
     
     if ($w('#fleetNavLink')) {
-        $w('#fleetNavLink').onClick(() => navigateTo('/fleet'));
+        $w('#fleetNavLink').onClick(() => navigateTo('/all-vehicles'));
     }
     
     if ($w('#aboutNavLink')) {
