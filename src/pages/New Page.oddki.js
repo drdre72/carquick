@@ -24,27 +24,55 @@ $w.onReady(function () {
         console.log('🔧 HMR check failed:', error.message);
     }
 
-    // ULTRA-SIMPLE TEST FIRST
+    // HEADLESS MODE DETECTION TEST
     try {
-        console.log('🎯 Starting ultra-simple element test...');
-        const testElements = ['#text6', '#text7', '#text8'];
+        console.log('🎯 HEADLESS MODE DETECTION TEST...');
 
-        for (let i = 0; i < testElements.length; i++) {
-            const elementId = testElements[i];
+        // Test if we're in headless mode
+        console.log('🔍 Environment check:');
+        console.log('- window.location.href:', (typeof window !== 'undefined' ? window.location.href : 'undefined'));
+        console.log('- Document title:', (typeof document !== 'undefined' ? document.title : 'undefined'));
+        console.log('- $w function available:', typeof $w);
+
+        // Try to find ANY elements at all
+        const allPossibleElements = [
+            '#text1', '#text2', '#text3', '#text4', '#text5', '#text6', '#text7', '#text8',
+            '#button1', '#button2', '#section1', '#container1', '#box1', '#image1',
+            'body', 'html', '#page', '#main', '#content'
+        ];
+
+        let foundAny = false;
+        for (let i = 0; i < allPossibleElements.length; i++) {
+            const elementId = allPossibleElements[i];
             try {
                 const element = $w(elementId);
-                if (element && element.text !== undefined) {
-                    element.text = `🔥 VISIBLE TEST ${i + 1} 🔥`;
-                    console.log(`✅ ULTRA-SIMPLE: Set text in ${elementId}`);
+                if (element) {
+                    console.log(`✅ FOUND ELEMENT: ${elementId}, type:`, typeof element);
+                    foundAny = true;
+
+                    // Try to log element properties
+                    const props = Object.keys(element);
+                    console.log(`📋 ${elementId} properties:`, props.slice(0, 10));
                 } else {
-                    console.log(`⚠️ ULTRA-SIMPLE: ${elementId} has no text property`);
+                    console.log(`❌ NULL: ${elementId}`);
                 }
             } catch (elemError) {
-                console.log(`❌ ULTRA-SIMPLE: ${elementId} failed -`, elemError.message);
+                console.log(`❌ ERROR: ${elementId} -`, elemError.message);
             }
         }
+
+        if (!foundAny) {
+            console.log('🚨 CRITICAL: NO ELEMENTS FOUND AT ALL!');
+            console.log('🤔 This suggests either:');
+            console.log('   1. You are in Wix HEADLESS mode (no visual elements)');
+            console.log('   2. The page has no elements added in Wix Studio');
+            console.log('   3. The $w selector is broken');
+        } else {
+            console.log('✅ Elements found - not in pure headless mode');
+        }
+
     } catch (ultraError) {
-        console.log('❌ Ultra-simple test failed:', ultraError.message);
+        console.log('❌ Headless detection test failed:', ultraError.message);
     }
 
     // SIMPLE TEST: Try to change any text to "Hello World"
